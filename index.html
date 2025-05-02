@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具目录 - Qer Tools</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        /* Header 样式 */
+        .site-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo a {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .main-nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .main-nav li {
+            margin-left: 20px;
+        }
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        /* 原有样式保留 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        .tools-list {
+            list-style: none;
+            padding: 0;
+        }
+        .tools-list li {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .tools-list li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .tools-list a {
+            display: block;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .tools-list a:hover {
+            color: #2980b9;
+        }
+        .tools-list p {
+            margin: 10px 0 0;
+            color: #666;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+    </style>
+    <script src="common.js"></script>
+</head>
+<body>
+    <!-- Header将被JavaScript动态加载 -->
+    <div id="header-placeholder"></div>
+    
+    <div class="container">
+        <h1>Qer 工具集</h1>
+        
+        <ul class="tools-list">
+            <li>
+                <a href="hex_binary_converter.html">十六进制/二进制转换器</a>
+                <p>用于十六进制和二进制数据的转换工具。</p>
+            </li>
+            <!-- 未来可以在这里添加更多工具 -->
+        </ul>
+        
+        <div class="footer">
+            <p>&copy; 2023-2025 Qer Tools. 保留所有权利。</p>
+        </div>
+    </div>
+</body>
+</html> 
