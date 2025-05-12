@@ -276,6 +276,40 @@
             min-height: 20px;
             word-break: break-all;
         }
+
+        .right-side .converter-mini-uev {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+        .right-side .converter-mini-uev h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+        }
+        .right-side .uev-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+        .right-side .uev-result {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            min-height: 20px;
+            word-break: break-all;
+        }
     </style>
     <script src="common.js"></script>
 </head>
@@ -343,6 +377,13 @@
                 </div>
                 
                 <div id="dec-bin-result" class="result"></div>
+            </div>
+
+            <div class="converter-mini-uev">
+                <h3>UE(v) 解码</h3>
+                <label for="uev-binary-input">二进制流：</label>
+                <input type="text" id="uev-binary-input" class="uev-input" placeholder="如 0001001..." oninput="decodeUEV()">
+                <div id="uev-result" class="uev-result"></div>
             </div>
         </div>
     </div>
@@ -808,6 +849,46 @@
             } catch (error) {
                 resultElement.textContent = '错误：转换失败';
             }
+        }
+
+        // 二进制UE(v)解码
+        function decodeUEV() {
+            const input = document.getElementById('uev-binary-input').value.trim().replace(/\s+/g, '');
+            const resultElement = document.getElementById('uev-result');
+            resultElement.textContent = '';
+            if (!input) return;
+            if (!/^[01]+$/.test(input)) {
+                resultElement.textContent = '错误：请输入有效的二进制流（0,1）';
+                return;
+            }
+            let html = '';
+            // 计算前导零数
+            let leadingZeroBits = 0;
+            while (leadingZeroBits < input.length && input[leadingZeroBits] === '0') {
+                leadingZeroBits++;
+            }
+            html += `<div>1. 前导零个数：<b>${leadingZeroBits}</b></div>`;
+            if (leadingZeroBits === input.length) {
+                html += '<div style="color:red;">错误：未找到第一个1，无法解码</div>';
+                resultElement.innerHTML = html;
+                return;
+            }
+            // ue(v)码字长度 = 前导零数 * 2 + 1
+            const totalLength = leadingZeroBits * 2 + 1;
+            html += `<div>2. 码字总长度：<b>${totalLength}</b>（= 前导零数 × 2 + 1）</div>`;
+            if (input.length < totalLength) {
+                html += `<div style='color:red;'>错误：码流长度不足，至少需要${totalLength}位</div>`;
+                resultElement.innerHTML = html;
+                return;
+            }
+            // 取后面的信息位
+            const infoBits = input.substr(leadingZeroBits + 1, leadingZeroBits);
+            html += `<div>3. 信息位：<b>${infoBits || '0'}</b></div>`;
+            const value = (1 << leadingZeroBits) - 1 + (infoBits ? parseInt(infoBits, 2) : 0);
+            html += `<div>4. 计算公式：<b>(1 &lt;&lt; ${leadingZeroBits}) - 1 + ${infoBits ? parseInt(infoBits, 2) : 0} = ${value}</b></div>`;
+            html += `<div>5. 码字内容：<b>${input.substr(0, totalLength)}</b></div>`;
+            html += `<div style='margin-top:8px;color:green;'><b>第一个UE(v)值：${value}</b></div>`;
+            resultElement.innerHTML = html;
         }
     </script>
 </body>
