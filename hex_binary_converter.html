@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>十六进制与二进制转换器</title>
+    <title>十六进制与二进制码流转换器</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +12,7 @@
             padding: 0;
             background-color: #f5f5f5;
         }
+
         /* Header 样式 */
         .site-header {
             background-color: #2c3e50;
@@ -20,21 +22,25 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .logo a {
             color: white;
             font-size: 1.5em;
             font-weight: bold;
             text-decoration: none;
         }
+
         .main-nav ul {
             display: flex;
             list-style: none;
             margin: 0;
             padding: 0;
         }
+
         .main-nav li {
             margin-left: 20px;
         }
+
         .main-nav a {
             color: white;
             text-decoration: none;
@@ -42,30 +48,42 @@
             border-radius: 3px;
             transition: background-color 0.3s;
         }
+
         .main-nav a:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
-        /* 原有样式保留 */
+
         .container {
-            max-width: 800px;
+            display: flex;
+            justify-content:center;
+            max-width: 1200px;
             margin: 20px auto;
+        }
+
+        .main {
+            width: 800px;
             background-color: white;
             padding: 20px;
+            margin: 0 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             text-align: center;
             color: #333;
         }
+
         .converter {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
+
         .checkbox-label {
             display: inline-flex;
             align-items: center;
@@ -73,9 +91,11 @@
             margin-right: 15px;
             cursor: pointer;
         }
+
         .checkbox-label input {
             margin-right: 8px;
         }
+
         textarea {
             width: 100%;
             height: 50px;
@@ -86,6 +106,7 @@
             resize: vertical;
             tab-size: 4;
         }
+
         button {
             padding: 10px 15px;
             background-color: #4CAF50;
@@ -96,24 +117,29 @@
             margin-top: 10px;
             margin-right: 10px;
         }
+
         button:hover {
             background-color: #45a049;
         }
+
         .error {
             color: red;
             margin-top: 5px;
         }
+
         .options {
             margin-top: 10px;
             display: flex;
             align-items: center;
         }
+
         .input-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
         }
+
         .space-button {
             background-color: #f0f0f0;
             color: #333;
@@ -122,14 +148,17 @@
             font-size: 12px;
             cursor: pointer;
         }
+
         .space-button:hover {
             background-color: #e0e0e0;
         }
+
         .space-button.active {
             background-color: #4CAF50;
             color: white;
             border: 1px solid #45a049;
         }
+
         .display-area {
             font-family: monospace;
             min-height: 30px;
@@ -145,6 +174,7 @@
             letter-spacing: -0.5px;
             word-spacing: -2px;
         }
+
         .tooltip {
             position: absolute;
             background-color: #ffffcc;
@@ -154,10 +184,11 @@
             font-size: 12px;
             pointer-events: none;
             z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             font-family: monospace;
             white-space: nowrap;
         }
+
         .display-char {
             display: inline-block;
             padding: 0;
@@ -166,14 +197,17 @@
             border-radius: 2px;
             font-size: 14px;
         }
+
         .highlight {
             background-color: #ffff66;
         }
+
         .relationship-line {
             border-top: 1px dashed #999;
             margin: 10px 0;
             position: relative;
         }
+
         .relationship-line::after {
             content: "⟷";
             position: absolute;
@@ -182,46 +216,134 @@
             font-size: 16px;
             color: #666;
         }
+
+        .right-side {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .right-side button {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .right-side .converter-mini {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .right-side .converter-mini h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .right-side input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+
+        .right-side .mini-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .right-side .mini-buttons button {
+            flex: 1;
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .right-side .result {
+            margin-top: 8px;
+            padding: 8px;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            min-height: 20px;
+            word-break: break-all;
+        }
     </style>
     <script src="common.js"></script>
 </head>
+
 <body>
     <!-- Header将被JavaScript动态加载 -->
     <div id="header-placeholder"></div>
-    
+
     <div class="container">
-        <h1>十六进制与二进制转换器</h1>
-        
-        <div class="converter">
-            <label for="hex-input">十六进制输入（例如：1A3F）：</label>
-            <textarea id="hex-input" placeholder="请输入十六进制"></textarea>
-            <div class="input-controls">
-                <div>
-                    <button id="hex-space-none-btn" onclick="setHexSpacing('none')" class="space-button active">无空格</button>
-                    <button id="hex-space-2-btn" onclick="setHexSpacing(2)" class="space-button">2位分组</button>
-                    <button id="load-example-btn" onclick="loadExampleData()" style="background-color: #2196F3;">加载示例数据</button>
-                </div>
-                <button onclick="hexToBinary()">转换为二进制</button>
+        <div class="main">
+            <h1>十六进制与二进制码流转换器</h1>
+
+            <div style="text-align:center;color:#666;margin-bottom:18px;">
+                本工具用于十六进制与二进制码流的可视化转换，保留前导零等特性，适合分析原始数据流。
             </div>
-            <div id="hex-error" class="error"></div>
-            <div id="hex-display" class="display-area"></div>
+
+            <div class="converter">
+                <label for="hex-input">十六进制输入（例如：1A3F）：</label>
+                <textarea id="hex-input" placeholder="请输入十六进制"></textarea>
+                <div class="input-controls">
+                    <div>
+                        <button id="hex-space-none-btn" onclick="setHexSpacing('none')"
+                            class="space-button active">无空格</button>
+                        <button id="hex-space-2-btn" onclick="setHexSpacing(2)" class="space-button">2位分组</button>
+                    </div>
+                    <button onclick="hexToBinary()">转换为二进制</button>
+                </div>
+                <div id="hex-error" class="error"></div>
+                <div id="hex-display" class="display-area"></div>
+            </div>
+
+            <div class="relationship-line"></div>
+
+            <div class="converter">
+                <label for="binary-input">二进制输入（例如：0001 1010 0011 1111）：</label>
+                <textarea id="binary-input" placeholder="请输入二进制"></textarea>
+                <div class="input-controls">
+                    <div>
+                        <button id="binary-space-none-btn" onclick="setBinarySpacing('none')"
+                            class="space-button active">无空格</button>
+                        <button id="binary-space-4-btn" onclick="setBinarySpacing(4)" class="space-button">4位分组</button>
+                        <button id="binary-space-8-btn" onclick="setBinarySpacing(8)" class="space-button">8位分组</button>
+                    </div>
+                    <button onclick="binaryToHex()">转换为十六进制</button>
+                </div>
+                <div id="binary-error" class="error"></div>
+                <div id="binary-display" class="display-area"></div>
+            </div>
         </div>
-        
-        <div class="relationship-line"></div>
-        
-        <div class="converter">
-            <label for="binary-input">二进制输入（例如：0001 1010 0011 1111）：</label>
-            <textarea id="binary-input" placeholder="请输入二进制"></textarea>
-            <div class="input-controls">
-                <div>
-                    <button id="binary-space-none-btn" onclick="setBinarySpacing('none')" class="space-button active">无空格</button>
-                    <button id="binary-space-4-btn" onclick="setBinarySpacing(4)" class="space-button">4位分组</button>
-                    <button id="binary-space-8-btn" onclick="setBinarySpacing(8)" class="space-button">8位分组</button>
+        <div class="right-side">
+            <button id="load-example-btn" onclick="loadExampleData()" style="background-color: #2196F3;">加载示例数据</button>
+            
+            <div class="converter-mini">
+                <h3>十进制与二进制快速互转</h3>
+                
+                <label for="decimal-input">十进制：</label>
+                <input type="text" id="decimal-input" placeholder="输入十进制数值">
+                
+                <label for="binary-quick-input">二进制：</label>
+                <input type="text" id="binary-quick-input" placeholder="输入二进制数值">
+                
+                <div class="mini-buttons">
+                    <button onclick="decimalToBinary()" style="background-color: #FF9800;">十→二</button>
+                    <button onclick="binaryToDecimal()" style="background-color: #9C27B0;">二→十</button>
                 </div>
-                <button onclick="binaryToHex()">转换为十六进制</button>
+                
+                <div id="dec-bin-result" class="result"></div>
             </div>
-            <div id="binary-error" class="error"></div>
-            <div id="binary-display" class="display-area"></div>
         </div>
     </div>
 
@@ -234,28 +356,28 @@
             useSpaces: false,  // 是否使用空格
             groupSize: 2       // 分组大小
         };
-        
+
         let binaryState = {
             value: '',         // 不带空格的原始值
             useSpaces: false,  // 是否使用空格
             groupSize: 4       // 分组大小
         };
-        
+
         // 初始化页面
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             setupDisplayAreas();
         });
-        
+
         // 设置可视化显示区域
         function setupDisplayAreas() {
             const hexDisplay = document.getElementById('hex-display');
             const binaryDisplay = document.getElementById('binary-display');
-            
+
             // 初始清空
             hexDisplay.innerHTML = '<span class="placeholder">转换结果将显示在这里</span>';
             binaryDisplay.innerHTML = '<span class="placeholder">转换结果将显示在这里</span>';
         }
-        
+
         // 更新十六进制显示区域
         function updateHexDisplayArea() {
             const hexDisplay = document.getElementById('hex-display');
@@ -263,30 +385,30 @@
                 hexDisplay.innerHTML = '<span class="placeholder">转换结果将显示在这里</span>';
                 return;
             }
-            
+
             let html = '';
             let formattedValue = hexState.value;
-            
+
             if (hexState.useSpaces) {
                 formattedValue = formatWithSpaces(hexState.value, hexState.groupSize);
             }
-            
+
             // 为每个字符创建独立的span元素
             for (let i = 0; i < formattedValue.length; i++) {
                 const char = formattedValue[i];
                 if (char === ' ') {
                     html += '<span class="space"> </span>';
                 } else {
-                    const dataIndex = hexState.useSpaces ? 
+                    const dataIndex = hexState.useSpaces ?
                         Math.floor(i / (hexState.groupSize + 1)) * hexState.groupSize + i % (hexState.groupSize + 1) :
                         i;
                     html += `<span class="display-char hex-char" data-index="${dataIndex}" onmouseover="highlightRelationship('hex', ${dataIndex})" onmouseout="clearHighlight()">${char}</span>`;
                 }
             }
-            
+
             hexDisplay.innerHTML = html;
         }
-        
+
         // 更新二进制显示区域
         function updateBinaryDisplayArea() {
             const binaryDisplay = document.getElementById('binary-display');
@@ -294,52 +416,52 @@
                 binaryDisplay.innerHTML = '<span class="placeholder">转换结果将显示在这里</span>';
                 return;
             }
-            
+
             let html = '';
             let formattedValue = binaryState.value;
-            
+
             if (binaryState.useSpaces) {
                 formattedValue = formatWithSpaces(binaryState.value, binaryState.groupSize);
             }
-            
+
             // 为每个字符创建独立的span元素
             for (let i = 0; i < formattedValue.length; i++) {
                 const char = formattedValue[i];
                 if (char === ' ') {
                     html += '<span class="space"> </span>';
                 } else {
-                    const dataIndex = binaryState.useSpaces ? 
+                    const dataIndex = binaryState.useSpaces ?
                         Math.floor(i / (binaryState.groupSize + 1)) * binaryState.groupSize + i % (binaryState.groupSize + 1) :
                         i;
                     html += `<span class="display-char binary-char" data-index="${dataIndex}" onmouseover="highlightRelationship('binary', ${dataIndex})" onmouseout="clearHighlight()">${char}</span>`;
                 }
             }
-            
+
             binaryDisplay.innerHTML = html;
         }
-        
+
         // 高亮相关元素
         function highlightRelationship(sourceType, index) {
             if (!hexState.value || !binaryState.value) return;
-            
+
             const tooltip = document.getElementById('tooltip');
-            
+
             if (sourceType === 'hex') {
                 // 高亮十六进制字符对应的二进制
                 const charIndex = Math.floor(index / hexState.groupSize) * hexState.groupSize;
                 const binaryStartIndex = charIndex * 2;
                 const binaryEndIndex = binaryStartIndex + (hexState.groupSize * 4);
-                
+
                 // 高亮十六进制字符
                 highlightElements('hex-char', charIndex, charIndex + hexState.groupSize);
-                
+
                 // 高亮对应的二进制
                 highlightElements('binary-char', binaryStartIndex, binaryEndIndex);
-                
+
                 // 显示提示信息
                 const hexChars = hexState.value.substring(charIndex, charIndex + hexState.groupSize);
                 const binaryChars = binaryState.value.substring(binaryStartIndex, binaryEndIndex);
-                
+
                 tooltip.textContent = `${hexChars} ⟷ ${binaryChars}`;
                 const sourceElement = event.target;
                 showTooltip(sourceElement);
@@ -347,7 +469,7 @@
                 // 高亮二进制对应的十六进制
                 let hexStartIndex, hexEndIndex;
                 let binaryStartIndex, binaryEndIndex;
-                
+
                 if (binaryState.groupSize === 8) {
                     // 8位二进制 = 2位十六进制
                     binaryStartIndex = Math.floor(index / 8) * 8;
@@ -361,31 +483,31 @@
                     hexStartIndex = Math.floor(binaryStartIndex / 4);
                     hexEndIndex = hexStartIndex + 1;
                 }
-                
+
                 // 高亮二进制
                 highlightElements('binary-char', binaryStartIndex, binaryEndIndex);
-                
+
                 // 高亮十六进制
                 highlightElements('hex-char', hexStartIndex, hexEndIndex);
-                
+
                 // 显示提示
                 const binaryChars = binaryState.value.substring(binaryStartIndex, binaryEndIndex);
                 const hexChars = hexState.value.substring(hexStartIndex, hexEndIndex);
-                
+
                 tooltip.textContent = `${binaryChars} ⟷ ${hexChars}`;
                 const sourceElement = event.target;
                 showTooltip(sourceElement);
             }
         }
-        
+
         // 高亮元素
         function highlightElements(className, startIndex, endIndex) {
             const elements = document.getElementsByClassName(className);
-            
+
             for (let i = 0; i < elements.length; i++) {
                 const element = elements[i];
                 const dataIndex = parseInt(element.getAttribute('data-index'));
-                
+
                 if (dataIndex >= startIndex && dataIndex < endIndex) {
                     element.classList.add('highlight');
                 } else {
@@ -393,22 +515,22 @@
                 }
             }
         }
-        
+
         // 显示工具提示
         function showTooltip(element) {
             const tooltip = document.getElementById('tooltip');
             const rect = element.getBoundingClientRect();
-            
+
             tooltip.style.display = 'block';
             tooltip.style.left = (rect.left) + 'px';
             tooltip.style.top = (rect.bottom + window.scrollY + 5) + 'px';
         }
-        
+
         // 清除高亮
         function clearHighlight() {
             const tooltip = document.getElementById('tooltip');
             tooltip.style.display = 'none';
-            
+
             // 清除所有高亮
             const highlightElements = document.getElementsByClassName('highlight');
             while (highlightElements.length > 0) {
@@ -425,7 +547,7 @@
                     hexState.value = input;
                 }
             }
-            
+
             // 根据选择的模式设置分组
             if (mode === 'none') {
                 hexState.useSpaces = false;
@@ -433,24 +555,24 @@
                 hexState.useSpaces = true;
                 hexState.groupSize = mode;
             }
-            
+
             updateHexDisplay();
             updateHexDisplayArea();
-            
+
             // 更新按钮状态
             const noneBtn = document.getElementById('hex-space-none-btn');
             const twoBtn = document.getElementById('hex-space-2-btn');
-            
+
             noneBtn.classList.remove('active');
             twoBtn.classList.remove('active');
-            
+
             if (mode === 'none') {
                 noneBtn.classList.add('active');
             } else if (mode === 2) {
                 twoBtn.classList.add('active');
             }
         }
-        
+
         // 设置二进制空格分割方式
         function setBinarySpacing(mode) {
             // 如果是用户直接输入的值（还未进行过转换）
@@ -460,7 +582,7 @@
                     binaryState.value = input;
                 }
             }
-            
+
             // 根据选择的模式设置分组
             if (mode === 'none') {
                 binaryState.useSpaces = false;
@@ -468,19 +590,19 @@
                 binaryState.useSpaces = true;
                 binaryState.groupSize = mode;
             }
-            
+
             updateBinaryDisplay();
             updateBinaryDisplayArea();
-            
+
             // 更新按钮状态
             const noneBtn = document.getElementById('binary-space-none-btn');
             const fourBtn = document.getElementById('binary-space-4-btn');
             const eightBtn = document.getElementById('binary-space-8-btn');
-            
+
             noneBtn.classList.remove('active');
             fourBtn.classList.remove('active');
             eightBtn.classList.remove('active');
-            
+
             if (mode === 'none') {
                 noneBtn.classList.add('active');
             } else if (mode === 4) {
@@ -493,18 +615,18 @@
         function updateHexDisplay() {
             const hexInput = document.getElementById('hex-input');
             if (!hexState.value) return;
-            
+
             if (hexState.useSpaces) {
                 hexInput.value = formatWithSpaces(hexState.value, hexState.groupSize);
             } else {
                 hexInput.value = hexState.value;
             }
         }
-        
+
         function updateBinaryDisplay() {
             const binaryInput = document.getElementById('binary-input');
             if (!binaryState.value) return;
-            
+
             if (binaryState.useSpaces) {
                 binaryInput.value = formatWithSpaces(binaryState.value, binaryState.groupSize);
             } else {
@@ -517,21 +639,21 @@
             const hexInput = document.getElementById('hex-input').value.trim().toUpperCase().replace(/\s+/g, '');
             const binaryOutput = document.getElementById('binary-input');
             const errorElement = document.getElementById('hex-error');
-            
+
             // 清除错误信息
             errorElement.textContent = '';
-            
+
             // 检查输入是否为有效的十六进制
             if (!/^[0-9A-F]+$/.test(hexInput)) {
                 errorElement.textContent = '错误：请输入有效的十六进制字符（0-9, A-F）';
                 return;
             }
-            
+
             // 存储当前十六进制值
             hexState.value = hexInput;
-            
+
             let binaryResult = '';
-            
+
             // 遍历每个十六进制字符并转换为4位二进制
             for (let i = 0; i < hexInput.length; i++) {
                 const decimalValue = parseInt(hexInput[i], 16);
@@ -539,44 +661,44 @@
                 const binaryChar = decimalValue.toString(2).padStart(4, '0');
                 binaryResult += binaryChar;
             }
-            
+
             // 存储转换后的二进制值
             binaryState.value = binaryResult;
-            
+
             // 更新二进制显示
             updateBinaryDisplay();
-            
+
             // 更新可视化显示区域
             updateHexDisplayArea();
             updateBinaryDisplayArea();
         }
-        
+
         function binaryToHex() {
             // 获取二进制输入并清除空格
             const binaryInput = document.getElementById('binary-input').value.trim().replace(/\s+/g, '');
             const hexOutput = document.getElementById('hex-input');
             const errorElement = document.getElementById('binary-error');
-            
+
             // 清除错误信息
             errorElement.textContent = '';
-            
+
             // 检查输入是否为有效的二进制
             if (!/^[01]+$/.test(binaryInput)) {
                 errorElement.textContent = '错误：请输入有效的二进制字符（0, 1）';
                 return;
             }
-            
+
             // 检查是否能被4整除
             if (binaryInput.length % 4 !== 0) {
                 errorElement.textContent = '错误：二进制位数必须是4的倍数';
                 return;
             }
-            
+
             // 存储当前二进制值
             binaryState.value = binaryInput;
-            
+
             let hexResult = '';
-            
+
             // 每4位二进制转换为1位十六进制
             for (let i = 0; i < binaryInput.length; i += 4) {
                 const fourBits = binaryInput.slice(i, i + 4);
@@ -584,18 +706,18 @@
                 const hexChar = decimalValue.toString(16).toUpperCase();
                 hexResult += hexChar;
             }
-            
+
             // 存储转换后的十六进制值
             hexState.value = hexResult;
-            
+
             // 更新十六进制显示
             updateHexDisplay();
-            
+
             // 更新可视化显示区域
             updateHexDisplayArea();
             updateBinaryDisplayArea();
         }
-        
+
         function formatWithSpaces(str, groupSize) {
             let result = '';
             for (let i = 0; i < str.length; i += groupSize) {
@@ -603,28 +725,28 @@
             }
             return result.trim();
         }
-        
+
         // 加载示例数据
         function loadExampleData() {
             // 示例数据 (注意这个ac是原始数据中的，不是AC)
             const exampleData = "00000001676400280acd9407802027e5c0440000000400000000e83c60c658";
-            
+
             // 设置到十六进制输入框
             document.getElementById('hex-input').value = exampleData;
             hexState.value = exampleData;
-            
+
             // 更新显示
             updateHexDisplay();
             updateHexDisplayArea();
-            
+
             // 自动转换为二进制
             hexToBinary();
-            
+
             // 提示用户已加载 (这里显示格式化后的数据)
             const hexError = document.getElementById('hex-error');
             hexError.textContent = '';
             hexError.innerHTML = '<span style="color: green;">✓ 示例数据已加载：00 00 00 01 67 64 00 28 0A CD 94 07 80 20 27 E5 C0 44 00 00 00 04 00 00 00 00 E8 3C 60 C6 58</span>';
-            
+
             // 闪烁显示区域以引起注意
             const hexDisplay = document.getElementById('hex-display');
             hexDisplay.style.transition = 'background-color 0.5s';
@@ -632,10 +754,62 @@
             setTimeout(() => {
                 hexDisplay.style.backgroundColor = '';
             }, 1000);
-            
+
             // 切换到2位分组模式
             setHexSpacing(2);
         }
+
+        // 十进制转二进制
+        function decimalToBinary() {
+            const decimalInput = document.getElementById('decimal-input').value.trim();
+            const resultElement = document.getElementById('dec-bin-result');
+            
+            // 清空结果
+            resultElement.textContent = '';
+            
+            // 验证输入
+            if (!/^\d+$/.test(decimalInput)) {
+                resultElement.textContent = '错误：请输入有效的十进制数字';
+                return;
+            }
+            
+            try {
+                const decimalValue = parseInt(decimalInput, 10);
+                const binaryValue = decimalValue.toString(2);
+                
+                // 显示结果
+                document.getElementById('binary-quick-input').value = binaryValue;
+                resultElement.textContent = `${decimalValue} (10) = ${binaryValue} (2)`;
+            } catch (error) {
+                resultElement.textContent = '错误：转换失败';
+            }
+        }
+        
+        // 二进制转十进制
+        function binaryToDecimal() {
+            const binaryInput = document.getElementById('binary-quick-input').value.trim();
+            const resultElement = document.getElementById('dec-bin-result');
+            
+            // 清空结果
+            resultElement.textContent = '';
+            
+            // 验证输入
+            if (!/^[01]+$/.test(binaryInput)) {
+                resultElement.textContent = '错误：请输入有效的二进制数字（0,1）';
+                return;
+            }
+            
+            try {
+                const decimalValue = parseInt(binaryInput, 2);
+                
+                // 显示结果
+                document.getElementById('decimal-input').value = decimalValue;
+                resultElement.textContent = `${binaryInput} (2) = ${decimalValue} (10)`;
+            } catch (error) {
+                resultElement.textContent = '错误：转换失败';
+            }
+        }
     </script>
 </body>
-</html> 
+
+</html>
