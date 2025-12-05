@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JitterBufferTarget Support Test</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+    }
+    .title {
+      font-size: 1.2rem;
+      color: #8892b0;
+      margin-bottom: 2rem;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    .result {
+      font-size: 12rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .result.true {
+      color: #64ffda;
+      text-shadow: 0 0 60px rgba(100, 255, 218, 0.5);
+    }
+    .result.false {
+      color: #ff6b6b;
+      text-shadow: 0 0 60px rgba(255, 107, 107, 0.5);
+    }
+    .code {
+      margin-top: 3rem;
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #a8b2d1;
+      max-width: 90vw;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">IS_JITTER_BUFFER_TARGET_SUPPORTED</div>
+  <div id="result" class="result"></div>
+  <div class="code">
+    'RTCRtpReceiver' in window && 'jitterBufferTarget' in window.RTCRtpReceiver.prototype
+  </div>
+
+  <script>
+    const IS_JITTER_BUFFER_TARGET_SUPPORTED = 'RTCRtpReceiver' in window && 'jitterBufferTarget' in window.RTCRtpReceiver.prototype;
+    
+    const el = document.getElementById('result');
+    el.textContent = IS_JITTER_BUFFER_TARGET_SUPPORTED ? 'TRUE' : 'FALSE';
+    el.classList.add(IS_JITTER_BUFFER_TARGET_SUPPORTED ? 'true' : 'false');
+  </script>
+</body>
+</html>
+
